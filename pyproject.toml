@@ -1,0 +1,31 @@
+[project]
+name = "email-assistant-ai"
+version = "0.1.0"
+description = "AI-powered email assistant — CAP 942 Capstone Project"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "streamlit>=1.40.0",
+    "ollama>=0.4.0",
+    "chromadb>=0.5.0",
+    "sentence-transformers>=3.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "ruff>=0.6.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/email_assistant"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+    "ruff>=0.6.0",
+]
