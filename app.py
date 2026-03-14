@@ -376,7 +376,6 @@ def page_rewrite():
         unsafe_allow_html=True
     )
 
-    # Input and button together at the top
     st.markdown("**Your Draft**")
     text = st.text_area(
         label="draft",
@@ -391,42 +390,6 @@ def page_rewrite():
 
     if st.button("✍️ Rewrite Professionally", key="rw_btn"):
         _run_feature(text, rewrite_email, "rewrite")
-    st.markdown(
-        '<div class="section-header">✍️ Rewrite Email</div>',
-        unsafe_allow_html=True
-    )
-    st.markdown(
-        '<div class="section-sub">Paste a casual draft — get a polished professional version.</div>',
-        unsafe_allow_html=True
-    )
-    # Two columns — input on left, output on right
-    # gap="large" adds space between columns
-    col1, col2 = st.columns(2, gap="large")
-
-    with col1:
-        st.markdown("**Your Draft**")
-        # st.text_area creates a multi-line text input box
-        # label_visibility="collapsed" hides the label (we use
-        # our own markdown label above instead)
-        # placeholder shows example text when the box is empty
-        text = st.text_area(
-            label="draft",
-            label_visibility="collapsed",
-            height=260,
-            placeholder=(
-                "e.g.  hey john we need the q3 report by friday "
-                "also meeting got moved thx"
-            ),
-            key="rw_input",
-        )
-        # key= gives this widget a unique ID so Streamlit
-        # can track its value between reruns
-
-    with col2:
-        st.markdown("**Professional Version**")
-        if st.button("✍️ Rewrite Professionally", key="rw_btn"):
-            _run_feature(text, rewrite_email, "rewrite")
-
 
 def page_summarize():
     st.markdown(
