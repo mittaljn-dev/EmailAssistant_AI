@@ -129,16 +129,24 @@ def save_email(original: str, processed: str, action: str) -> str:
     # 1. Keeps the database file small
     # 2. Encoding is faster on shorter text
     # 3. 500 chars captures the essential meaning of any email
-    snippet  = original[:500]
-    processed_snippet = processed[:500]
+
+    # For EMBEDDING — we use only 500 chars for speed
+    # Shorter text = faster encoding, smaller vectors
+    embed_snippet = original[:500]
+    embed_processed = processed[:500]
+    embed_text = (
+        f"[{action.upper()}]\n"
+        f"Original: {embed_snippet}\n"
+        f"Result: {embed_processed}"
+    )
 
     # Combine both texts into one document string.
     # We store both the original and processed version together
     # so search results show the complete context.
     combined = (
         f"[{action.upper()}]\n"
-        f"Original: {snippet}\n"
-        f"Result: {processed_snippet}"
+        f"Original: {original}\n"
+        f"Result: {processed}"
     )
 
     # encode() converts the text string into a vector.
@@ -146,7 +154,7 @@ def save_email(original: str, processed: str, action: str) -> str:
     # .tolist() converts it to a plain Python list because
     # ChromaDB expects a plain list, not a numpy array.
     # The result is a list of 384 floating point numbers.
-    embedding = model.encode(combined, convert_to_numpy=True).tolist()
+    embedding = model.encode(embed_text, convert_to_numpy=True).tolist()
 
     # Generate a unique ID for this record.
     # str(uuid.uuid4()) gives us something like:
