@@ -1,0 +1,18 @@
+```
+
+Open `.gitattributes` in VS Code and paste this:
+```
+# Handle line endings automatically
+* text=auto
+
+# Force these file types to always use LF
+*.py    text eol=lf
+*.md    text eol=lf
+*.toml  text eol=lf
+*.txt   text eol=lf
+
+# Force these to always use CRLF on Windows
+*.bat   text eol=crlf
+*.cmd   text eol=crlf
+```
+This configuration ensures that line endings are handled correctly across different operating systems, preventing issues with inconsistent line endings in your project.
