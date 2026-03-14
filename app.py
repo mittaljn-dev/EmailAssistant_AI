@@ -375,6 +375,30 @@ def page_rewrite():
         '<div class="section-sub">Paste a casual draft — get a polished professional version.</div>',
         unsafe_allow_html=True
     )
+
+    # Input and button together at the top
+    st.markdown("**Your Draft**")
+    text = st.text_area(
+        label="draft",
+        label_visibility="collapsed",
+        height=220,
+        placeholder=(
+            "e.g.  hey john we need the q3 report by friday "
+            "also meeting got moved thx"
+        ),
+        key="rw_input",
+    )
+
+    if st.button("✍️ Rewrite Professionally", key="rw_btn"):
+        _run_feature(text, rewrite_email, "rewrite")
+    st.markdown(
+        '<div class="section-header">✍️ Rewrite Email</div>',
+        unsafe_allow_html=True
+    )
+    st.markdown(
+        '<div class="section-sub">Paste a casual draft — get a polished professional version.</div>',
+        unsafe_allow_html=True
+    )
     # Two columns — input on left, output on right
     # gap="large" adds space between columns
     col1, col2 = st.columns(2, gap="large")
