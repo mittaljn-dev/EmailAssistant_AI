@@ -124,10 +124,12 @@ st.markdown("""
     padding: 20px 24px;
     font-family: 'DM Mono', monospace;
     font-size: 0.82rem;
-    line-height: 1.7;
+    line-height: 1.6;
     white-space: pre-wrap;
     color: var(--text);
     margin-top: 12px;
+    max-height: 500px;
+    overflow-y: auto;
   }
   .status-bar {
     display: flex;
