@@ -9,6 +9,7 @@
 The application has three layers:
 
 ```
+
 ┌─────────────────────────────────────────────┐
 │           PRESENTATION LAYER                │
 │              app.py                         │
