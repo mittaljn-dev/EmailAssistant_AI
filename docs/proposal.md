@@ -116,6 +116,7 @@ Thank you.
 ---
 
 ## 7. Application Workflow
+
 ```
 User Input (Streamlit UI)
         ↓
