@@ -1,9 +1,9 @@
 # Project Proposal — AI Email Assistant
 ## CAP 942: Capstone Project — AI Application Development
 
-**Student Name:** [Your Full Name]
-**Date:** [Submission Date]
-**Instructor:** [Instructor Name]
+**Student Name:** [Mittal Jain]
+**Date:** [03/2026]
+**Instructor:** [Alex]
 
 ---
 

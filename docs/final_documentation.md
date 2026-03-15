@@ -1,8 +1,8 @@
 # Final Documentation — AI Email Assistant
 ## CAP 942: Capstone Project — AI Application Development
 
-**Student Name:** [Your Full Name]
-**Date:** [Submission Date]
+**Student Name:** Mittal Jain
+**Date:** [03/2026]
 **GitHub:** https://github.com/mittal-jn/EmailAssistant_AI
 
 ---
