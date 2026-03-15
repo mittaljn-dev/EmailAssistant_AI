@@ -217,7 +217,24 @@ st.markdown("""
   [data-testid="stExpander"] summary:focus {
     background-color: var(--surface) !important;
   }
-  
+
+  [data-testid="stTabs"] button {
+    color: var(--muted) !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 0.88rem !important;
+  }
+  [data-testid="stTabs"] button:hover {
+    color: var(--text) !important;
+    background-color: transparent !important;
+  }
+  [data-testid="stTabs"] button[aria-selected="true"] {
+    color: var(--text) !important;
+    font-weight: 600 !important;
+  }
+  [data-testid="stTabs"] [data-testid="stMarkdownContainer"] p {
+    color: var(--text) !important;
+  }
+
  [data-testid="collapsedControl"] { display: none !important; }
  section[data-testid="stSidebar"] { 
     min-width: 300px !important; 
@@ -500,9 +517,9 @@ def page_history():
 
     # Three tabs inside the history page
     tab_search, tab_all, tab_manage = st.tabs([
-        "🔍 Semantic Search",
-        "📚 All Emails",
-        "⚙️ Manage"
+        " Semantic Search",
+        " All Emails",
+        " Manage"
     ])
 
     with tab_search:
