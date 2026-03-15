@@ -446,7 +446,7 @@ def page_rewrite():
         output_area = st.empty()
         # Show a waiting box before any result is generated
         output_area.markdown(
-            '<div class="result-card" style="min-height:320px;'
+            '<div class="result-card" style="height:370px;'
             'display:flex;align-items:center;justify-content:center;'
             'color:#4a4d52;font-size:0.85rem;letter-spacing:0.5px;">'
             'Your rewritten email will appear here...'
@@ -546,7 +546,7 @@ def page_clarity():
         output_area = st.empty()
         # Show a waiting box before any result is generated
         output_area.markdown(
-            '<div class="result-card" style="min-height:320px;'
+            '<div class="result-card" style="height:370px;'
             'display:flex;align-items:center;justify-content:center;'
             'color:#4a4d52;font-size:0.85rem;letter-spacing:0.5px;">'
             'Your rewritten email will appear here...'
