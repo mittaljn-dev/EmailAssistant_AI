@@ -426,7 +426,12 @@ def page_rewrite():
     col1, col2 = st.columns(2, gap="large")
 
     with col1:
-        st.markdown("**Your Draft**")
+        st.markdown(
+            '<div style="font-size:0.85rem;font-weight:600;'
+            'color:var(--muted);margin-bottom:8px;'
+            'font-family:DM Sans,sans-serif;">YOUR DRAFT</div>',
+            unsafe_allow_html=True
+        )
         text = st.text_area(
             label="draft",
             label_visibility="collapsed",
@@ -440,11 +445,13 @@ def page_rewrite():
         run = st.button("✍️ Rewrite Professionally", key="rw_btn")
 
     with col2:
-        st.markdown("**Professional Version**")
-        # This placeholder lives permanently in col2
-        # It gets filled when the button is clicked
+        st.markdown(
+            '<div style="font-size:0.85rem;font-weight:600;'
+            'color:var(--muted);margin-bottom:8px;'
+            'font-family:DM Sans,sans-serif;">PROFESSIONAL VERSION</div>',
+            unsafe_allow_html=True
+        )
         output_area = st.empty()
-        # Show a waiting box before any result is generated
         output_area.markdown(
             '<div class="result-card" style="height:370px;'
             'display:flex;align-items:center;justify-content:center;'
@@ -531,7 +538,12 @@ def page_clarity():
     col1, col2 = st.columns(2, gap="large")
 
     with col1:
-        st.markdown("**Your Email**")
+        st.markdown(
+            '<div style="font-size:0.85rem;font-weight:600;'
+            'color:var(--muted);margin-bottom:8px;'
+            'font-family:DM Sans,sans-serif;">YOUR EMAIL</div>',
+            unsafe_allow_html=True
+        )
         text = st.text_area(
             label="email_clar",
             label_visibility="collapsed",
@@ -542,14 +554,18 @@ def page_clarity():
         run = st.button("💡 Analyze & Improve", key="clar_btn")
 
     with col2:
-        st.markdown("**Feedback & Improved Version**")
+        st.markdown(
+            '<div style="font-size:0.85rem;font-weight:600;'
+            'color:var(--muted);margin-bottom:8px;'
+            'font-family:DM Sans,sans-serif;">FEEDBACK & IMPROVED VERSION</div>',
+            unsafe_allow_html=True
+        )
         output_area = st.empty()
-        # Show a waiting box before any result is generated
         output_area.markdown(
             '<div class="result-card" style="height:370px;'
             'display:flex;align-items:center;justify-content:center;'
             'color:#4a4d52;font-size:0.85rem;letter-spacing:0.5px;">'
-            'Your rewritten email will appear here...'
+            'Your feedback and improved version will appear here...'
             '</div>',
             unsafe_allow_html=True,
         )
