@@ -444,6 +444,15 @@ def page_rewrite():
         # This placeholder lives permanently in col2
         # It gets filled when the button is clicked
         output_area = st.empty()
+        # Show a waiting box before any result is generated
+        output_area.markdown(
+            '<div class="result-card" style="min-height:320px;'
+            'display:flex;align-items:center;justify-content:center;'
+            'color:#4a4d52;font-size:0.85rem;letter-spacing:0.5px;">'
+            'Your rewritten email will appear here...'
+            '</div>',
+            unsafe_allow_html=True,
+        )
 
     # Button logic runs AFTER both columns are defined
     # This is the key fix — we define columns first,
@@ -535,6 +544,15 @@ def page_clarity():
     with col2:
         st.markdown("**Feedback & Improved Version**")
         output_area = st.empty()
+        # Show a waiting box before any result is generated
+        output_area.markdown(
+            '<div class="result-card" style="min-height:320px;'
+            'display:flex;align-items:center;justify-content:center;'
+            'color:#4a4d52;font-size:0.85rem;letter-spacing:0.5px;">'
+            'Your rewritten email will appear here...'
+            '</div>',
+            unsafe_allow_html=True,
+        )
 
     if run:
         if not text.strip():
