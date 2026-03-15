@@ -422,20 +422,52 @@ def page_rewrite():
         unsafe_allow_html=True
     )
 
-    st.markdown("**Your Draft**")
-    text = st.text_area(
-        label="draft",
-        label_visibility="collapsed",
-        height=220,
-        placeholder=(
-            "e.g.  hey john we need the q3 report by friday "
-            "also meeting got moved thx"
-        ),
-        key="rw_input",
-    )
+    # Two columns — input left, output right
+    col1, col2 = st.columns(2, gap="large")
 
-    if st.button("✍️ Rewrite Professionally", key="rw_btn"):
-        _run_feature(text, rewrite_email, "rewrite")
+    with col1:
+        st.markdown("**Your Draft**")
+        text = st.text_area(
+            label="draft",
+            label_visibility="collapsed",
+            height=320,
+            placeholder=(
+                "e.g.  hey john we need the q3 report by friday "
+                "also meeting got moved thx"
+            ),
+            key="rw_input",
+        )
+        run = st.button("✍️ Rewrite Professionally", key="rw_btn")
+
+    with col2:
+        st.markdown("**Professional Version**")
+        # This placeholder lives permanently in col2
+        # It gets filled when the button is clicked
+        output_area = st.empty()
+
+    # Button logic runs AFTER both columns are defined
+    # This is the key fix — we define columns first,
+    # then handle the button click outside of them
+    if run:
+        if not text.strip():
+            st.warning("Please paste an email first.")
+        elif not _ollama_guard():
+            pass
+        else:
+            full_response = ""
+            with st.spinner(""):
+                for chunk in rewrite_email(text):
+                    full_response += chunk
+                    output_area.markdown(
+                        f'<div class="result-card">{full_response}▌</div>',
+                        unsafe_allow_html=True,
+                    )
+            output_area.markdown(
+                f'<div class="result-card">{full_response}</div>',
+                unsafe_allow_html=True,
+            )
+            save_email(text, full_response, "rewrite")
+            st.success("💾 Saved to history.")
 
 def page_summarize():
     st.markdown(
@@ -486,16 +518,44 @@ def page_clarity():
         '<div class="section-sub">Get coaching feedback and an improved version in one shot.</div>',
         unsafe_allow_html=True
     )
-    text = st.text_area(
-        label="email_clar",
-        label_visibility="collapsed",
-        height=240,
-        placeholder="Paste your email to get clarity coaching...",
-        key="clar_input",
-    )
-    if st.button("💡 Analyze & Improve", key="clar_btn"):
-        _run_feature(text, improve_clarity, "clarity")
 
+    col1, col2 = st.columns(2, gap="large")
+
+    with col1:
+        st.markdown("**Your Email**")
+        text = st.text_area(
+            label="email_clar",
+            label_visibility="collapsed",
+            height=320,
+            placeholder="Paste your email to get clarity coaching...",
+            key="clar_input",
+        )
+        run = st.button("💡 Analyze & Improve", key="clar_btn")
+
+    with col2:
+        st.markdown("**Feedback & Improved Version**")
+        output_area = st.empty()
+
+    if run:
+        if not text.strip():
+            st.warning("Please paste an email first.")
+        elif not _ollama_guard():
+            pass
+        else:
+            full_response = ""
+            with st.spinner(""):
+                for chunk in improve_clarity(text):
+                    full_response += chunk
+                    output_area.markdown(
+                        f'<div class="result-card">{full_response}▌</div>',
+                        unsafe_allow_html=True,
+                    )
+            output_area.markdown(
+                f'<div class="result-card">{full_response}</div>',
+                unsafe_allow_html=True,
+            )
+            save_email(text, full_response, "clarity")
+            st.success("💾 Saved to history.")
 
 def page_history():
     st.markdown(
