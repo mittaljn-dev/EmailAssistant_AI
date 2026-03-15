@@ -60,16 +60,16 @@ st.markdown("""
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap');
 
-  :root {
-    --bg:      #0e0f11;
-    --surface: #16181c;
-    --border:  #2a2d35;
-    --accent:  #e8c547;
-    --accent2: #5b9cf6;
-    --text:    #e2e4e9;
-    --muted:   #6b7280;
-    --success: #34d399;
-    --danger:  #f87171;
+   :root {
+    --bg:      #1e2433;
+    --surface: #262d40;
+    --border:  #343d52;
+    --accent:  #ff6b6b;
+    --accent2: #4ecdc4;
+    --text:    #eef0f4;
+    --muted:   #7d8ba8;
+    --success: #2dd4a0;
+    --danger:  #ff4757;
   }
 
   html, body, [data-testid="stAppViewContainer"] {
@@ -196,7 +196,13 @@ st.markdown("""
   .stTextInput input:focus {
     border-color: var(--accent) !important;
   }
-  #MainMenu, footer, header { visibility: hidden; }
+ #MainMenu, footer, header { visibility: hidden; }
+ [data-testid="collapsedControl"] { display: none !important; }
+ section[data-testid="stSidebar"] { 
+    min-width: 300px !important; 
+    width: 300px !important; 
+    transform: none !important; 
+}
   .block-container { padding-top: 2rem !important; }
 </style>
 """, unsafe_allow_html=True)
