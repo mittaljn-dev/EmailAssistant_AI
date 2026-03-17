@@ -684,10 +684,25 @@ def page_history():
 
     with tab_manage:
         st.warning("Deleting history is permanent. All saved emails will be removed.")
-        if st.button("🗑️ Delete All History", key="del_btn"):
-            n = delete_all_emails()
-            st.success(f"Deleted {n} record(s).")
-            st.rerun()
+        
+        # Show confirmation dialog if delete was requested
+        if st.session_state.get("show_delete_confirm", False):
+            st.error("⚠️ Are you sure you want to delete all saved emails?")
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("✅ Yes, Delete All", key="confirm_del", type="primary"):
+                    n = delete_all_emails()
+                    st.success(f"Deleted {n} record(s).")
+                    st.session_state.show_delete_confirm = False
+                    st.rerun()
+            with col2:
+                if st.button("❌ Cancel", key="cancel_del"):
+                    st.session_state.show_delete_confirm = False
+                    st.rerun()
+        else:
+            if st.button("🗑️ Delete All History", key="del_btn"):
+                st.session_state.show_delete_confirm = True
+                st.rerun()
 
 
 # ── Page Router ────────────────────────────────────────────────
