@@ -495,15 +495,63 @@ def page_summarize():
         '<div class="section-sub">Turn long complex messages into 3–5 clear bullet points.</div>',
         unsafe_allow_html=True
     )
-    text = st.text_area(
-        label="email_sum",
-        label_visibility="collapsed",
-        height=240,
-        placeholder="Paste a long email here...",
-        key="sum_input",
-    )
-    if st.button("📋 Summarize Now", key="sum_btn"):
-        _run_feature(text, summarize_email, "summarize")
+
+    col1, col2 = st.columns(2, gap="large")
+
+    with col1:
+        st.markdown(
+            '<div style="font-size:0.85rem;font-weight:600;'
+            'color:var(--muted);margin-bottom:8px;'
+            'font-family:DM Sans,sans-serif;">YOUR EMAIL</div>',
+            unsafe_allow_html=True
+        )
+        text = st.text_area(
+            label="email_sum",
+            label_visibility="collapsed",
+            height=320,
+            placeholder="Paste a long email here...",
+            key="sum_input",
+        )
+        run = st.button("📋 Summarize Now", key="sum_btn")
+
+    with col2:
+        st.markdown(
+            '<div style="font-size:0.85rem;font-weight:600;'
+            'color:var(--muted);margin-bottom:8px;'
+            'font-family:DM Sans,sans-serif;">SUMMARY</div>',
+            unsafe_allow_html=True
+        )
+        output_area = st.empty()
+        output_area.markdown(
+            '<div class="result-card" style="height:370px;'
+            'margin-top:-2px;'
+            'display:flex;align-items:center;justify-content:center;'
+            'color:#4a4d52;font-size:0.85rem;letter-spacing:0.5px;">'
+            'Your summary will appear here...'
+            '</div>',
+            unsafe_allow_html=True,
+        )
+
+    if run:
+        if not text.strip():
+            st.warning("Please paste an email first.")
+        elif not _ollama_guard():
+            pass
+        else:
+            full_response = ""
+            with st.spinner(""):
+                for chunk in summarize_email(text):
+                    full_response += chunk
+                    output_area.markdown(
+                        f'<div class="result-card">{full_response}▌</div>',
+                        unsafe_allow_html=True,
+                    )
+            output_area.markdown(
+                f'<div class="result-card">{full_response}</div>',
+                unsafe_allow_html=True,
+            )
+            save_email(text, full_response, "summarize")
+            st.success("💾 Saved to history.")
 
 
 def page_extract():
@@ -515,15 +563,63 @@ def page_extract():
         '<div class="section-sub">Find every task, deadline, person, and decision in an email.</div>',
         unsafe_allow_html=True
     )
-    text = st.text_area(
-        label="email_ext",
-        label_visibility="collapsed",
-        height=240,
-        placeholder="Paste an email with tasks or deadlines...",
-        key="ext_input",
-    )
-    if st.button("✅ Extract Now", key="ext_btn"):
-        _run_feature(text, extract_action_items, "extract")
+
+    col1, col2 = st.columns(2, gap="large")
+
+    with col1:
+        st.markdown(
+            '<div style="font-size:0.85rem;font-weight:600;'
+            'color:var(--muted);margin-bottom:8px;'
+            'font-family:DM Sans,sans-serif;">YOUR EMAIL</div>',
+            unsafe_allow_html=True
+        )
+        text = st.text_area(
+            label="email_ext",
+            label_visibility="collapsed",
+            height=320,
+            placeholder="Paste an email with tasks or deadlines...",
+            key="ext_input",
+        )
+        run = st.button("✅ Extract Now", key="ext_btn")
+
+    with col2:
+        st.markdown(
+            '<div style="font-size:0.85rem;font-weight:600;'
+            'color:var(--muted);margin-bottom:8px;'
+            'font-family:DM Sans,sans-serif;">EXTRACTED ITEMS</div>',
+            unsafe_allow_html=True
+        )
+        output_area = st.empty()
+        output_area.markdown(
+            '<div class="result-card" style="height:370px;'
+            'margin-top:-2px;'
+            'display:flex;align-items:center;justify-content:center;'
+            'color:#4a4d52;font-size:0.85rem;letter-spacing:0.5px;">'
+            'Tasks, deadlines, and people will appear here...'
+            '</div>',
+            unsafe_allow_html=True,
+        )
+
+    if run:
+        if not text.strip():
+            st.warning("Please paste an email first.")
+        elif not _ollama_guard():
+            pass
+        else:
+            full_response = ""
+            with st.spinner(""):
+                for chunk in extract_action_items(text):
+                    full_response += chunk
+                    output_area.markdown(
+                        f'<div class="result-card">{full_response}▌</div>',
+                        unsafe_allow_html=True,
+                    )
+            output_area.markdown(
+                f'<div class="result-card">{full_response}</div>',
+                unsafe_allow_html=True,
+            )
+            save_email(text, full_response, "extract")
+            st.success("💾 Saved to history.")
 
 
 def page_clarity():
