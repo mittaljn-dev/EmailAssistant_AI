@@ -12,7 +12,7 @@ That is exactly the problem this app solves.
 The AI Email Assistant rewrites, summarizes, extracts action items, and searches
 your past emails — all running privately on your own machine, with no subscriptions,
 no data leaving your device, and no cost.
----
+
 
 ## What It Does
 
