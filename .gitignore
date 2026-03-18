@@ -9,8 +9,8 @@ __pycache__/
 venv/
 
 # ChromaDB database files — user data, not source code
-data/
-
+data/*
+!data/.gitkeep
 # Streamlit cache
 .streamlit/
 
