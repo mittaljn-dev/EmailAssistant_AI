@@ -4,7 +4,9 @@
 
 > A fully local AI email assistant powered by Llama 3.2 (1B) via Ollama.
 > No paid APIs. No internet needed at runtime. Runs on 8 GB RAM.
+>Before I get into the technical details, let me ask you something. How many of you have sent an email that you immediately wished you could rewrite? Or received a long email and thought — I just need the key points from this.
 
+>That is exactly the problem this app solves.
 ---
 
 ## What It Does
