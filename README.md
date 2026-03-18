@@ -2,11 +2,16 @@
 
 ### CAP 942 — Capstone Project | AI Application Development
 
-> A fully local AI email assistant powered by Llama 3.2 (1B) via Ollama.
-> No paid APIs. No internet needed at runtime. Runs on 8 GB RAM.
->Before I get into the technical details, let me ask you something. How many of you have sent an email that you immediately wished you could rewrite? Or received a long email and thought — I just need the key points from this.
+> A fully local AI email assistant powered by **Llama 3.2 (1B)** via Ollama.
+> No paid APIs. No internet needed at runtime. Runs on **8 GB RAM**.
 
->That is exactly the problem this app solves.
+How many of us have sent an email we immediately wished we could rewrite?
+Or received a long message and thought — *I just need the key points from this.*
+That is exactly the problem this app solves.
+
+The AI Email Assistant rewrites, summarizes, extracts action items, and searches
+your past emails — all running privately on your own machine, with no subscriptions,
+no data leaving your device, and no cost.
 ---
 
 ## What It Does
