@@ -24,6 +24,8 @@ from src.email_assistant.llm_engine import (
     summarize_email,
     extract_action_items,
     improve_clarity,
+    detect_and_translate,
+    translate_to_language,
 )
 
 # Import all our storage functions from vector_store.
@@ -289,6 +291,8 @@ with st.sidebar:
         st.session_state.page = "clarity"
     if st.button("🗂️  Search History",       use_container_width=True):
         st.session_state.page = "history"
+    if st.button("🌐  Translate Email",       use_container_width=True):
+        st.session_state.page = "translate"
 
     st.divider()
 
@@ -688,6 +692,198 @@ def page_clarity():
             )
             save_email(text, full_response, "clarity")
             st.success("💾 Saved to history.")
+def page_translate():
+    st.markdown(
+        '<div class="section-header">🌐 Translate Email</div>',
+        unsafe_allow_html=True
+    )
+    st.markdown(
+        '<div class="section-sub">Translate emails to and from any language — auto-detects the source language.</div>',
+        unsafe_allow_html=True
+    )
+
+    # Two mode tabs
+    tab_to_english, tab_to_language = st.tabs([
+        "Translate to English",
+        "Translate to Another Language"
+    ])
+
+    # ── Tab 1 — Detect and translate TO English ──────────────
+    with tab_to_english:
+        st.markdown(
+            '<div style="font-size:0.83rem;color:var(--muted);'
+            '<div style="font-size:0.83rem;color:var(--muted);'
+            'margin-bottom:12px;">Paste a foreign language email — '
+            'the app detects the language and translates it to English. '
+            '<strong>Note: if your email is already in English, '
+            'use the other tab to translate it into another language.</strong>'
+    '</div>',
+    unsafe_allow_html=True
+        )
+
+        col1, col2 = st.columns(2, gap="large")
+
+        with col1:
+            st.markdown(
+                '<div style="font-size:0.85rem;font-weight:600;'
+                'color:var(--muted);margin-bottom:8px;'
+                'font-family:DM Sans,sans-serif;">ORIGINAL EMAIL</div>',
+                unsafe_allow_html=True
+            )
+            text_detect = st.text_area(
+                label="detect_input",
+                label_visibility="collapsed",
+                height=320,
+                placeholder="Paste email in any language here...",
+                key="detect_input",
+            )
+            run_detect = st.button(
+                "🔍 Detect & Translate to English",
+                key="detect_btn"
+            )
+
+        with col2:
+            st.markdown(
+                '<div style="font-size:0.85rem;font-weight:600;'
+                'color:var(--muted);margin-bottom:8px;'
+                'font-family:DM Sans,sans-serif;">ENGLISH TRANSLATION</div>',
+                unsafe_allow_html=True
+            )
+            output_detect = st.empty()
+            output_detect.markdown(
+                '<div class="result-card" style="height:370px;'
+                'margin-top:-2px;display:flex;align-items:center;'
+                'justify-content:center;color:#4a4d52;'
+                'font-size:0.85rem;letter-spacing:0.5px;">'
+                'Detected language and English translation will appear here...'
+                '</div>',
+                unsafe_allow_html=True,
+            )
+
+        if run_detect:
+            if not text_detect.strip():
+                st.warning("Please paste an email first.")
+            elif not _ollama_guard():
+                pass
+            else:
+                full_response = ""
+                with st.spinner(""):
+                    for chunk in detect_and_translate(text_detect):
+                        full_response += chunk
+                        output_detect.markdown(
+                            f'<div class="result-card">{full_response}▌</div>',
+                            unsafe_allow_html=True,
+                        )
+                output_detect.markdown(
+                    f'<div class="result-card">{full_response}</div>',
+                    unsafe_allow_html=True,
+                )
+                save_email(text_detect, full_response, "translate")
+                st.success("💾 Saved to history.")
+
+    # ── Tab 2 — Translate TO another language ────────────────
+    with tab_to_language:
+        st.markdown(
+            '<div style="font-size:0.83rem;color:var(--muted);'
+            'margin-bottom:12px;">Paste an email and choose the '
+            'target language to translate into.</div>',
+            unsafe_allow_html=True
+        )
+
+        # Language selector
+        LANGUAGES = [
+            # Most widely spoken globally
+            "Spanish",
+            "Mandarin Chinese",
+            "Hindi",
+            "Arabic",
+            "Bengali",
+            "Portuguese",
+            "Russian",
+            "Japanese",
+            "Urdu",
+            "French",
+            # European
+            "German",
+            "Italian",
+            "Dutch",
+            "Turkish",
+            # Asian
+            "Korean",
+            "Vietnamese",
+            "Indonesian",
+            "Tamil",
+            # African
+            "Swahili",
+        ]
+
+        target_lang = st.selectbox(
+            "Target language",
+            LANGUAGES,
+            key="target_lang"
+        )
+
+        col1, col2 = st.columns(2, gap="large")
+
+        with col1:
+            st.markdown(
+                '<div style="font-size:0.85rem;font-weight:600;'
+                'color:var(--muted);margin-bottom:8px;'
+                'font-family:DM Sans,sans-serif;">ORIGINAL EMAIL</div>',
+                unsafe_allow_html=True
+            )
+            text_translate = st.text_area(
+                label="translate_input",
+                label_visibility="collapsed",
+                height=280,
+                placeholder="Paste your email here...",
+                key="translate_input",
+            )
+            run_translate = st.button(
+                f"🌐 Translate to {target_lang}",
+                key="translate_btn"
+            )
+
+        with col2:
+            st.markdown(
+                f'<div style="font-size:0.85rem;font-weight:600;'
+                f'color:var(--muted);margin-bottom:8px;'
+                f'font-family:DM Sans,sans-serif;">{target_lang.upper()} TRANSLATION</div>',
+                unsafe_allow_html=True
+            )
+            output_translate = st.empty()
+            output_translate.markdown(
+                f'<div class="result-card" style="height:330px;'
+                f'margin-top:-2px;display:flex;align-items:center;'
+                f'justify-content:center;color:#4a4d52;'
+                f'font-size:0.85rem;letter-spacing:0.5px;">'
+                f'Your {target_lang} translation will appear here...'
+                f'</div>',
+                unsafe_allow_html=True,
+            )
+
+        if run_translate:
+            if not text_translate.strip():
+                st.warning("Please paste an email first.")
+            elif not _ollama_guard():
+                pass
+            else:
+                full_response = ""
+                with st.spinner(""):
+                    for chunk in translate_to_language(
+                        text_translate, target_lang
+                    ):
+                        full_response += chunk
+                        output_translate.markdown(
+                            f'<div class="result-card">{full_response}▌</div>',
+                            unsafe_allow_html=True,
+                        )
+                output_translate.markdown(
+                    f'<div class="result-card">{full_response}</div>',
+                    unsafe_allow_html=True,
+                )
+                save_email(text_translate, full_response, "translate")
+                st.success("💾 Saved to history.")
 
 def page_history():
     st.markdown(
@@ -820,6 +1016,7 @@ PAGE_MAP = {
     "extract"  : page_extract,
     "clarity"  : page_clarity,
     "history"  : page_history,
+    "translate": page_translate,
 }
 
 # Get the function for the current page and call it.

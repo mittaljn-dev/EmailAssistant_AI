@@ -251,3 +251,52 @@ def improve_clarity(text: str) -> Generator[str, None, None]:
         "Response:"
     )
     return _stream(prompt)
+
+#translation function
+def detect_and_translate(text: str) -> Generator[str, None, None]:
+    """
+    Auto-detects the language of the email and translates to English.
+    Best used when receiving a foreign language email.
+
+    Prompt design notes:
+    - Asks model to first identify the language
+    - Then translate to English
+    - Output format is structured: DETECTED LANGUAGE + TRANSLATION
+    - "Output nothing else" prevents model adding commentary
+    """
+    prompt = (
+        "You are a professional language detection and translation assistant.\n"
+        "Step 1: Identify the language of the email below.\n"
+        "Step 2: If the email is already in English, respond with:\n"
+        "DETECTED LANGUAGE: English\n"
+        "NOTE: This email is already in English. No translation needed.\n"
+        "Step 3: If the email is NOT in English, respond with:\n"
+        "DETECTED LANGUAGE: [language name]\n"
+        "TRANSLATION:\n[full English translation here]\n\n"
+        "Do not add anything else.\n\n"
+        f"Email:\n{text}\n\n"
+        "DETECTED LANGUAGE:"
+    )
+    return _stream(prompt)
+
+
+def translate_to_language(text: str, target_language: str) -> Generator[str, None, None]:
+    """
+    Translates an email from any language into the chosen target language.
+    Best used when sending an email to someone who speaks another language.
+
+    Prompt design notes:
+    - Target language is injected directly into the prompt
+    - "Professional email tone" preserves formality
+    - "Output only the translated email" removes preamble
+    - Works for all 8 supported languages
+    """
+    prompt = (
+        f"You are a professional email translator.\n"
+        f"Translate the email below into {target_language}.\n"
+        f"Maintain a professional email tone.\n"
+        f"Output only the translated email, nothing else.\n\n"
+        f"Email:\n{text}\n\n"
+        f"Translation in {target_language}:"
+    )
+    return _stream(prompt)
