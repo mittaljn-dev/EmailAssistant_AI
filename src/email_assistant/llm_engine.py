@@ -9,6 +9,7 @@ This file contains:
 - summarize_email()         : summarize into bullet points
 - extract_action_items()    : extract tasks, deadlines, names
 - improve_clarity()         : coaching feedback + improved version
+- generate_reply_email()    : draft a professional reply
 
 All feature functions return GENERATORS (they use yield, not return).
 This enables streaming — Streamlit receives and displays tokens
@@ -249,6 +250,29 @@ def improve_clarity(text: str) -> Generator[str, None, None]:
         "IMPROVED VERSION: (a better rewritten version of the email)\n\n"
         f"Email:\n{text}\n\n"
         "Response:"
+    )
+    return _stream(prompt)
+
+
+def generate_reply_email(text: str) -> Generator[str, None, None]:
+    """
+    Generate a professional reply to an incoming email.
+
+    Prompt design notes:
+    - We set a clear role focused on replying, not summarizing
+    - We ask for concise, action-oriented output suitable to send
+    - We request a complete email with subject and body
+    - We force "output only" to avoid extra model commentary
+    """
+    prompt = (
+        "You are a professional email assistant.\n"
+        "Write a thoughtful and professional reply to the incoming email below.\n"
+        "Keep the response concise, clear, and actionable.\n"
+        "If the incoming email asks questions, answer them directly.\n"
+        "Include a subject line followed by the email body.\n"
+        "Output only the reply email, nothing else.\n\n"
+        f"Incoming email:\n{text}\n\n"
+        "Reply email:"
     )
     return _stream(prompt)
 
