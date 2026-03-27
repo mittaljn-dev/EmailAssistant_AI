@@ -21,7 +21,6 @@ import streamlit as st
 from src.email_assistant.llm_engine import (
     check_ollama_connection,
     rewrite_email,
-    generate_reply_email,
     summarize_email,
     extract_action_items,
     improve_clarity,
@@ -162,7 +161,6 @@ st.markdown("""
     font-weight: 500;
   }
   .badge-rewrite   { background:#1e3a2f; color:var(--success); }
-  .badge-reply     { background:#12394a; color:#7dd3fc; }
   .badge-summarize { background:#1a2d4a; color:var(--accent2); }
   .badge-extract   { background:#3a2a1a; color:#fb923c; }
   .badge-clarity   { background:#2d1a3a; color:#c084fc; }
@@ -285,8 +283,6 @@ with st.sidebar:
     # Streamlit reruns the script, showing the new page.
     if st.button("✍️  Rewrite Email",       use_container_width=True):
         st.session_state.page = "rewrite"
-    if st.button("↩️  Reply to Email",       use_container_width=True):
-        st.session_state.page = "reply"
     if st.button("📋  Summarize",            use_container_width=True):
         st.session_state.page = "summarize"
     if st.button("✅  Extract Action Items", use_container_width=True):
@@ -335,7 +331,7 @@ st.markdown("""
   <span class="main-badge">Local · Private · Free</span>
 </div>
 <div class="main-sub">
-  Rewrite · Reply · Summarize · Extract · Improve · Search — all on your machine.
+  Rewrite · Summarize · Extract · Improve · Search — all on your machine.
 </div>
 """, unsafe_allow_html=True)
 
@@ -559,74 +555,6 @@ def page_summarize():
                 unsafe_allow_html=True,
             )
             save_email(text, full_response, "summarize")
-            st.success("💾 Saved to history.")
-
-
-def page_reply():
-    st.markdown(
-        '<div class="section-header">↩️ Reply to Email</div>',
-        unsafe_allow_html=True
-    )
-    st.markdown(
-        '<div class="section-sub">Paste an incoming email and generate a professional, ready-to-send reply.</div>',
-        unsafe_allow_html=True
-    )
-
-    col1, col2 = st.columns(2, gap="large")
-
-    with col1:
-        st.markdown(
-            '<div style="font-size:0.85rem;font-weight:600;'
-            'color:var(--muted);margin-bottom:8px;'
-            'font-family:DM Sans,sans-serif;">INCOMING EMAIL</div>',
-            unsafe_allow_html=True
-        )
-        text = st.text_area(
-            label="email_reply",
-            label_visibility="collapsed",
-            height=320,
-            placeholder="Paste the email you need to reply to...",
-            key="reply_input",
-        )
-        run = st.button("↩️ Generate Reply", key="reply_btn")
-
-    with col2:
-        st.markdown(
-            '<div style="font-size:0.85rem;font-weight:600;'
-            'color:var(--muted);margin-bottom:8px;'
-            'font-family:DM Sans,sans-serif;">GENERATED REPLY</div>',
-            unsafe_allow_html=True
-        )
-        output_area = st.empty()
-        output_area.markdown(
-            '<div class="result-card" style="height:370px;'
-            'margin-top:-2px;'
-            'display:flex;align-items:center;justify-content:center;'
-            'color:#4a4d52;font-size:0.85rem;letter-spacing:0.5px;">'
-            'Your reply email will appear here...'
-            '</div>',
-            unsafe_allow_html=True,
-        )
-
-    if run:
-        if not text.strip():
-            st.warning("Please paste an email first.")
-        elif not _ollama_guard():
-            pass
-        else:
-            full_response = ""
-            with st.spinner(""):
-                for chunk in generate_reply_email(text):
-                    full_response += chunk
-                    output_area.markdown(
-                        f'<div class="result-card">{full_response}▌</div>',
-                        unsafe_allow_html=True,
-                    )
-            output_area.markdown(
-                f'<div class="result-card">{full_response}</div>',
-                unsafe_allow_html=True,
-            )
-            save_email(text, full_response, "reply")
             st.success("💾 Saved to history.")
 
 
@@ -885,7 +813,6 @@ def page_translate():
             "Vietnamese",
             "Indonesian",
             "Tamil",
-            "Marathi",
             # African
             "Swahili",
         ]
@@ -971,7 +898,6 @@ def page_history():
     # Badge HTML for each action type — coloured labels
     BADGES = {
         "rewrite"  : '<span class="badge badge-rewrite">rewrite</span>',
-        "reply"    : '<span class="badge badge-reply">reply</span>',
         "summarize": '<span class="badge badge-summarize">summarize</span>',
         "extract"  : '<span class="badge badge-extract">extract</span>',
         "clarity"  : '<span class="badge badge-clarity">clarity</span>',
@@ -1086,7 +1012,6 @@ def page_history():
 # Clean way (dispatch table):
 PAGE_MAP = {
     "rewrite"  : page_rewrite,
-    "reply"    : page_reply,
     "summarize": page_summarize,
     "extract"  : page_extract,
     "clarity"  : page_clarity,
