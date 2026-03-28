@@ -9,9 +9,9 @@ How many of us have sent an email we immediately wished we could rewrite?
 Or received a long message and thought — *I just need the key points from this.*
 That is exactly the problem this app solves.
 
-The AI Email Assistant rewrites, summarizes, extracts action items, and searches
-your past emails — all running privately on your own machine, with no subscriptions,
-no data leaving your device, and no cost.
+The AI Email Assistant rewrites, summarizes, extracts action items, replies, translates,
+and searches your past emails — all running privately on your own machine, with no
+subscriptions, no data leaving your device, and no cost.
 
 
 ## What It Does
@@ -22,6 +22,8 @@ no data leaving your device, and no cost.
 | 📋 Summarize | Compresses long emails into 3-5 bullet points |
 | ✅ Extract | Pulls out tasks, deadlines, names, and decisions |
 | 💡 Improve Clarity | Coaching feedback plus an improved version |
+| ↩️ Reply Email | Drafts a professional reply to any incoming email |
+| 🌐 Translate Email | Auto-detects language and translates to English, or translates to any of 19 target languages |
 | 🗂️ Search History | Finds past emails by meaning using vector search |
 
 ---

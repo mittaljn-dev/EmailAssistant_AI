@@ -59,7 +59,8 @@ The application has three layers:
 - Uses streaming mode (yields chunks, not full response at once)
 - Returns generators that app.py consumes token by token
 - Contains: check_ollama_connection(), rewrite_email(),
-  summarize_email(), extract_action_items(), improve_clarity()
+  summarize_email(), extract_action_items(), improve_clarity(),
+  generate_reply_email(), detect_and_translate(), translate_to_language()
 
 ### `src/email_assistant/vector_store.py` — Memory Layer
 
@@ -103,6 +104,42 @@ Step 7: vector_store encodes the text using SentenceTransformers
 Step 8: vector_store stores the vector + text + metadata in ChromaDB
         ChromaDB writes to disk at data/chroma_db/
         A unique UUID is assigned to this record
+```
+
+### When a user replies to an email
+
+```
+Step 1: User pastes an incoming email into the Reply page
+        app.py captures the text as a Python string
+
+Step 2: User clicks "Generate Reply" button
+        app.py calls llm_engine.generate_reply_email(text)
+
+Step 3: llm_engine builds a prompt instructing the model to write
+        a professional reply that answers any questions directly
+        and includes a subject line + body
+
+Step 4–6: Same streaming + save flow as Rewrite (steps 4-8 above)
+          Result saved to ChromaDB with action="reply"
+```
+
+### When a user translates an email
+
+```
+Step 1: User selects "Translate to English" or "Translate to Language" tab
+
+  Mode A — Detect & translate to English:
+  Step 2: app.py calls llm_engine.detect_and_translate(text)
+          Model identifies the source language, then outputs
+          DETECTED LANGUAGE: [name] + full English translation
+
+  Mode B — Translate to target language:
+  Step 2: User picks a target language from the dropdown (19 options)
+          app.py calls llm_engine.translate_to_language(text, target_language)
+          Model translates preserving professional email tone
+
+Step 3–5: Same streaming + save flow as other features
+          Result saved to ChromaDB with action="translate"
 ```
 
 ### When a user searches history

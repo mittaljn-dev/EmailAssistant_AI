@@ -86,7 +86,7 @@ natural language — not just pattern matching.
 
 ---
 
-## 5. The Five Features — My Reasoning
+## 5. The Seven Features — My Reasoning
 
 ### Feature 1: Rewrite Email
 
@@ -117,7 +117,24 @@ Acts like a writing coach — explains what's wrong AND fixes it.
 - Input: any email
 - Output: feedback on tone/clarity + improved version
 
-### Feature 5: Search History (Vector Search)
+### Feature 5: Reply Email
+
+Reads an incoming email and drafts a complete, professional reply.
+Answers questions directly and keeps the tone actionable.
+
+- Input: an incoming email you received
+- Output: a ready-to-send subject line + reply body
+
+### Feature 6: Translate Email
+
+Two modes in one page: auto-detect the language of a foreign email
+and translate it to English, OR translate any email into one of 19
+target languages (Spanish, French, Arabic, Japanese, and more).
+
+- Input: email text + optional target language
+- Output: detected language label + full translation
+
+### Feature 7: Search History (Vector Search)
 
 The most technically interesting feature. Uses ChromaDB to find
 past emails by meaning, not keywords.
@@ -129,8 +146,8 @@ past emails by meaning, not keywords.
 
 ## 6. How the Features Connect
 
-Every feature (1-4) automatically saves its result to ChromaDB.
-Feature 5 then searches across everything saved by features 1-4.
+Every feature (1-6) automatically saves its result to ChromaDB.
+Feature 7 then searches across everything saved by features 1-6.
 This means the app gets MORE useful the more you use it.
 
 ---
