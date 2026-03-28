@@ -18,6 +18,8 @@ and business workers manage and improve their email communication.
 - Poor writing quality in quickly drafted emails
 - Time lost reading long complex messages
 - Tasks and deadlines missed because they are buried in email text
+- No easy way to draft a professional reply to a complex incoming email
+- Language barriers when communicating with international contacts
 - No way to find past emails by their meaning
 
 ### Intended Users
@@ -47,7 +49,7 @@ for any professional to use without technical knowledge.
 │              STREAMLIT UI  (app.py)                     │
 │                                                         │
 │  ✍️ Rewrite  📋 Summarize  ✅ Extract  💡 Clarity        │
-│                    🗂️ Search History                     │
+│       ↩️ Reply  🌐 Translate  🗂️ Search History          │
 └──────────────┬──────────────────────────┬───────────────┘
                │                          │
                ▼                          ▼
@@ -135,7 +137,10 @@ of hardcoding values.
 feature, sends them to Ollama using `stream=True`, and yields
 tokens back one at a time as a Python generator. Contains
 `check_ollama_connection()` which verifies the server is
-running before the app accepts any user input.
+running before the app accepts any user input. Functions:
+`rewrite_email()`, `summarize_email()`, `extract_action_items()`,
+`improve_clarity()`, `generate_reply_email()`,
+`detect_and_translate()`, `translate_to_language()`.
 
 **`vector_store.py`** — All memory logic. Uses `@lru_cache`
 to load the SentenceTransformers model once per session.
@@ -189,6 +194,24 @@ Provides two outputs in one response — a FEEDBACK section
 with 2-3 sentences of coaching on tone, clarity, and
 structure, followed by an IMPROVED VERSION of the email.
 Acts as an on-demand writing coach.
+
+### Reply Email
+
+Reads an incoming email and drafts a complete professional
+reply including a subject line and body. The prompt instructs
+the model to answer any questions directly, keep the tone
+actionable, and output only the reply with no commentary.
+Result saved to ChromaDB with action="reply".
+
+### Translate Email
+Two modes on one page. **Translate to English** auto-detects
+the source language using the model and outputs a structured
+response with DETECTED LANGUAGE label followed by the full
+English translation. **Translate to Language** accepts a
+target language from a dropdown of 19 options (Spanish,
+French, Arabic, Japanese, and more) and translates any email
+into that language while preserving professional tone. Both
+modes are saved to ChromaDB with action="translate".
 
 ### Search History
 Every processed email is automatically saved to ChromaDB

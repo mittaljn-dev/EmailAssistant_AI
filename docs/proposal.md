@@ -45,7 +45,7 @@ of office workers as a simple, private, free tool.
 
 ## 3. Proposed Solution
 
-An AI-powered email assistant with five core features:
+An AI-powered email assistant with seven core features:
 
 | Feature | AI Role |
 |---------|---------|
@@ -53,6 +53,8 @@ An AI-powered email assistant with five core features:
 | Summarize Email | LLM produces 3–5 bullet point summary |
 | Extract Action Items | LLM extracts tasks, deadlines, names |
 | Improve Clarity | LLM provides coaching and improved version |
+| Reply Email | LLM drafts a professional reply to incoming email |
+| Translate Email | LLM detects language and translates to/from English or any of 19 languages |
 | Search History | Vector embeddings enable semantic search |
 
 ---
@@ -66,6 +68,8 @@ write and receive emails daily as part of their core work activity.
 - A manager reviewing a long project update email
 - An employee drafting a difficult message to a client
 - An assistant extracting tasks from a meeting follow-up email
+- A professional replying to a complex incoming email quickly
+- Anyone communicating with international contacts in different languages
 - Anyone searching for a past conversation by topic
 
 ---
@@ -121,7 +125,7 @@ Thank you.
 User Input (Streamlit UI)
         ↓
 Feature Selection
-(Rewrite / Summarize / Extract / Improve)
+(Rewrite / Summarize / Extract / Improve / Reply / Translate)
         ↓
 Prompt Engineering (llm_engine.py)
         ↓
@@ -143,7 +147,7 @@ Search History → Semantic query → Top-K results by similarity
 **In scope for this capstone:**
 - Single user local application
 - Plain text email input
-- Four AI processing features
+- Six AI processing features
 - Vector-based semantic search history
 - Streamlit web interface
 
