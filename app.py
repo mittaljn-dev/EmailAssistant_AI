@@ -26,6 +26,7 @@ from src.email_assistant.llm_engine import (
     improve_clarity,
     detect_and_translate,
     translate_to_language,
+    generate_reply_email,
 )
 
 # Import all our storage functions from vector_store.
@@ -289,6 +290,8 @@ with st.sidebar:
         st.session_state.page = "extract"
     if st.button("💡  Improve Clarity",      use_container_width=True):
         st.session_state.page = "clarity"
+    if st.button("↩️  Reply Email",          use_container_width=True):
+        st.session_state.page = "reply"
     if st.button("🗂️  Search History",       use_container_width=True):
         st.session_state.page = "history"
     if st.button("🌐  Translate Email",       use_container_width=True):
@@ -692,6 +695,74 @@ def page_clarity():
             )
             save_email(text, full_response, "clarity")
             st.success("💾 Saved to history.")
+def page_reply():
+    st.markdown(
+        '<div class="section-header">↩️ Reply Email</div>',
+        unsafe_allow_html=True
+    )
+    st.markdown(
+        '<div class="section-sub">Paste an incoming email — get a professional reply drafted instantly.</div>',
+        unsafe_allow_html=True
+    )
+
+    col1, col2 = st.columns(2, gap="large")
+
+    with col1:
+        st.markdown(
+            '<div style="font-size:0.85rem;font-weight:600;'
+            'color:var(--muted);margin-bottom:8px;'
+            'font-family:DM Sans,sans-serif;">INCOMING EMAIL</div>',
+            unsafe_allow_html=True
+        )
+        text = st.text_area(
+            label="reply_input",
+            label_visibility="collapsed",
+            height=320,
+            placeholder="Paste the email you want to reply to...",
+            key="reply_input",
+        )
+        run = st.button("↩️ Generate Reply", key="reply_btn")
+
+    with col2:
+        st.markdown(
+            '<div style="font-size:0.85rem;font-weight:600;'
+            'color:var(--muted);margin-bottom:8px;'
+            'font-family:DM Sans,sans-serif;">YOUR REPLY</div>',
+            unsafe_allow_html=True
+        )
+        output_area = st.empty()
+        output_area.markdown(
+            '<div class="result-card" style="height:370px;'
+            'margin-top:-2px;'
+            'display:flex;align-items:center;justify-content:center;'
+            'color:#4a4d52;font-size:0.85rem;letter-spacing:0.5px;">'
+            'Your reply will appear here...'
+            '</div>',
+            unsafe_allow_html=True,
+        )
+
+    if run:
+        if not text.strip():
+            st.warning("Please paste an email first.")
+        elif not _ollama_guard():
+            pass
+        else:
+            full_response = ""
+            with st.spinner(""):
+                for chunk in generate_reply_email(text):
+                    full_response += chunk
+                    output_area.markdown(
+                        f'<div class="result-card">{full_response}▌</div>',
+                        unsafe_allow_html=True,
+                    )
+            output_area.markdown(
+                f'<div class="result-card">{full_response}</div>',
+                unsafe_allow_html=True,
+            )
+            save_email(text, full_response, "reply")
+            st.success("💾 Saved to history.")
+
+
 def page_translate():
     st.markdown(
         '<div class="section-header">🌐 Translate Email</div>',
@@ -712,13 +783,12 @@ def page_translate():
     with tab_to_english:
         st.markdown(
             '<div style="font-size:0.83rem;color:var(--muted);'
-            '<div style="font-size:0.83rem;color:var(--muted);'
             'margin-bottom:12px;">Paste a foreign language email — '
             'the app detects the language and translates it to English. '
             '<strong>Note: if your email is already in English, '
             'use the other tab to translate it into another language.</strong>'
-    '</div>',
-    unsafe_allow_html=True
+            '</div>',
+            unsafe_allow_html=True
         )
 
         col1, col2 = st.columns(2, gap="large")
@@ -901,6 +971,8 @@ def page_history():
         "summarize": '<span class="badge badge-summarize">summarize</span>',
         "extract"  : '<span class="badge badge-extract">extract</span>',
         "clarity"  : '<span class="badge badge-clarity">clarity</span>',
+        "translate": '<span class="badge badge-summarize">translate</span>',
+        "reply"    : '<span class="badge badge-rewrite">reply</span>',
     }
 
     # Three tabs inside the history page
@@ -1015,6 +1087,7 @@ PAGE_MAP = {
     "summarize": page_summarize,
     "extract"  : page_extract,
     "clarity"  : page_clarity,
+    "reply"    : page_reply,
     "history"  : page_history,
     "translate": page_translate,
 }
