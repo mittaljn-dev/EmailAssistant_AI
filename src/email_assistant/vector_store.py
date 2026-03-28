@@ -204,31 +204,26 @@ def search_emails(query: str, top_k: int = SEARCH_TOP_K) -> list[dict]:
     Returns [] if no emails are saved yet.
     """
     collection = _get_collection()
-
-    # Can't search an empty collection — return early
-    count = collection.count()
-    if count == 0:
-        return []
-
     model = _get_embed_model()
 
     # Encode the search query the same way we encoded saved emails.
     # This puts the query in the same "vector space" so comparison works.
     embedding = model.encode(query, convert_to_numpy=True).tolist()
 
-    # min() prevents asking for more results than we have stored.
-    # e.g. if we only have 2 emails saved, we can't return top 4.
-    k = min(top_k, count)
-
     # collection.query() is ChromaDB's search function.
+    # ChromaDB handles empty collections and n_results > count gracefully —
+    # no pre-flight count() call is needed.
     # query_embeddings : the vector to compare against
     # n_results        : how many matches to return
     # include          : what data to include in results
     results = collection.query(
         query_embeddings=[embedding],
-        n_results=k,
+        n_results=top_k,
         include=["documents", "metadatas", "distances"],
     )
+
+    if not results["documents"][0]:
+        return []
 
     # results is a nested dictionary. Each value is a list of lists
     # because ChromaDB supports batch queries.
@@ -266,14 +261,14 @@ def get_all_emails(limit: int = 50) -> list[dict]:
     """
     collection = _get_collection()
 
-    if collection.count() == 0:
-        return []
-
     # collection.get() retrieves records without any search.
     # include tells ChromaDB what data to return.
     results = collection.get(
         include=["documents", "metadatas"]
     )
+
+    if not results["documents"]:
+        return []
 
     # Zip documents and metadata together into pairs
     # then sort by timestamp string newest first.
@@ -300,17 +295,16 @@ def delete_all_emails() -> int:
         int : the number of records that were deleted
     """
     collection = _get_collection()
-    count = collection.count()
 
-    if count == 0:
+    # Fetch only IDs — no need for documents or metadata.
+    # include=[] returns just the ids list with no extra data fetched.
+    ids = collection.get(include=[])["ids"]
+
+    if not ids:
         return 0
 
-    # collection.get() returns all IDs.
-    # We need the IDs to tell ChromaDB which records to delete.
-    ids = collection.get()["ids"]
     collection.delete(ids=ids)
-
-    return count
+    return len(ids)
 
 
 def collection_count() -> int:
