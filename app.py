@@ -284,14 +284,14 @@ with st.sidebar:
     # Streamlit reruns the script, showing the new page.
     if st.button("✍️  Rewrite Email",       use_container_width=True):
         st.session_state.page = "rewrite"
+    if st.button("↩️  Reply Email",          use_container_width=True):
+        st.session_state.page = "reply"
     if st.button("📋  Summarize",            use_container_width=True):
         st.session_state.page = "summarize"
     if st.button("✅  Extract Action Items", use_container_width=True):
         st.session_state.page = "extract"
     if st.button("💡  Improve Clarity",      use_container_width=True):
         st.session_state.page = "clarity"
-    if st.button("↩️  Reply Email",          use_container_width=True):
-        st.session_state.page = "reply"
     if st.button("🗂️  Search History",       use_container_width=True):
         st.session_state.page = "history"
     if st.button("🌐  Translate Email",       use_container_width=True):
