@@ -48,8 +48,8 @@ for any professional to use without technical knowledge.
 ┌─────────────────────────────────────────────────────────┐
 │              STREAMLIT UI  (app.py)                     │
 │                                                         │
-│  ✍️ Rewrite  📋 Summarize  ✅ Extract  💡 Clarity        │
-│       ↩️ Reply  🌐 Translate  🗂️ Search History          │
+│  ✍️ Rewrite  📋 Summarize  ✅ Extract  💡 Clarity     │
+│       ↩️ Reply  🌐 Translate  🗂️ Search History        |
 └──────────────┬──────────────────────────┬───────────────┘
                │                          │
                ▼                          ▼
@@ -78,7 +78,7 @@ for any professional to use without technical knowledge.
 │              STREAMLIT UI — Output                      │
 │                                                         │
 │  Result streams live word by word                       │
-│  Full text saved to ChromaDB automatically             │
+│  Full text saved to ChromaDB automatically              │
 │  Search history finds emails by meaning                 │
 └─────────────────────────────────────────────────────────┘
 ```
