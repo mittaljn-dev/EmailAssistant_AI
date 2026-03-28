@@ -8,7 +8,7 @@
 
 The application has three layers:
 
-```
+```text
 
 ┌─────────────────────────────────────────────┐
 │           PRESENTATION LAYER                │
@@ -76,7 +76,7 @@ The application has three layers:
 
 ### When a user rewrites an email
 
-```
+```text
 Step 1: User pastes email text into Streamlit text area
         app.py captures the text as a Python string
 
@@ -108,7 +108,7 @@ Step 8: vector_store stores the vector + text + metadata in ChromaDB
 
 ### When a user replies to an email
 
-```
+```text
 Step 1: User pastes an incoming email into the Reply page
         app.py captures the text as a Python string
 
@@ -125,7 +125,7 @@ Step 4–6: Same streaming + save flow as Rewrite (steps 4-8 above)
 
 ### When a user translates an email
 
-```
+```text
 Step 1: User selects "Translate to English" or "Translate to Language" tab
 
   Mode A — Detect & translate to English:
@@ -144,7 +144,7 @@ Step 3–5: Same streaming + save flow as other features
 
 ### When a user searches history
 
-```
+```text
 Step 1: User types a search query e.g. "meeting rescheduled"
         app.py captures the query string
 
@@ -169,13 +169,13 @@ Step 6: app.py converts distance to similarity percentage
 
 Without streaming (blocking mode):
 
-```
+```text
 User clicks button → [spinner for 30-60 seconds] → full response appears
 ```
 
 With streaming (our approach):
 
-```
+```text
 User clicks button → tokens appear word by word → feels like live typing
 ```
 
@@ -189,7 +189,7 @@ Streaming makes this feel interactive instead of frozen.
 Loading SentenceTransformers from disk takes ~3-4 seconds.
 Without caching:
 
-```
+```text
 save_email() call 1 → load model (3s) → encode → store
 save_email() call 2 → load model (3s) → encode → store  ← wasteful!
 save_email() call 3 → load model (3s) → encode → store  ← wasteful!
@@ -197,7 +197,7 @@ save_email() call 3 → load model (3s) → encode → store  ← wasteful!
 
 With @lru_cache:
 
-```
+```text
 save_email() call 1 → load model (3s) → encode → store
 save_email() call 2 → model already in memory → encode → store  ✅
 save_email() call 3 → model already in memory → encode → store  ✅
@@ -211,7 +211,7 @@ on every subsequent call.
 ## 6. RAM Budget (8 GB Machine)
 
 | Component | RAM Usage |
-|------------|-----------|
+| --------- | --------- |
 | Windows 10/11 + background apps | ~2.5 GB |
 | Ollama + Llama 3.2:1b model | ~1.3 GB |
 | SentenceTransformers (all-MiniLM-L6-v2) | ~90 MB |
@@ -225,7 +225,7 @@ on every subsequent call.
 
 ## 7. File Structure Reference
 
-```
+```text
 EmailAssistant_AI/
 │
 ├── app.py                      ← Entry point (Streamlit UI)

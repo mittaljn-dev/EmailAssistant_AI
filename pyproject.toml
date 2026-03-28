@@ -30,5 +30,8 @@ dev = [
     "ruff>=0.6.0",
 ]
 
+[tool.ruff]
+exclude = ["skeletons"]
+
 [tool.pytest.ini_options]
 cache_dir = "C:/Temp/pytest_cache"

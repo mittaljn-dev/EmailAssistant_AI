@@ -1,0 +1,12 @@
+**/*.py
+**/*.toml
+**/*.txt
+**/*.lock
+**/*.json
+**/*.yaml
+**/*.yml
+**/*.cfg
+**/*.ini
+.venv/
+node_modules/
+data/

@@ -160,7 +160,7 @@ This means the app gets MORE useful the more you use it.
 | Out of memory errors | Cap num_ctx at 2048, num_predict at 512 |
 | ChromaDB grows too large | Truncate stored text to 500 chars, limit history to 50 |
 | Import errors between modules | Use src/ layout + uv's package installation |
-| Ollama not running when app starts | Check connection on startup, show clear error message |
+| Ollama not running when app starts | Check connection on startup, show clear error |
 
 ---
 

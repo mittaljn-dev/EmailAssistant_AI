@@ -1,4 +1,5 @@
 # Project Proposal — AI Email Assistant
+
 ## CAP 942: Capstone Project — AI Application Development
 
 **Student Name:** [Mittal Jain]
@@ -48,13 +49,13 @@ of office workers as a simple, private, free tool.
 An AI-powered email assistant with seven core features:
 
 | Feature | AI Role |
-|---------|---------|
+| ------- | ------- |
 | Rewrite Email | LLM rewrites draft in professional tone |
 | Summarize Email | LLM produces 3–5 bullet point summary |
 | Extract Action Items | LLM extracts tasks, deadlines, names |
 | Improve Clarity | LLM provides coaching and improved version |
 | Reply Email | LLM drafts a professional reply to incoming email |
-| Translate Email | LLM detects language and translates to/from English or any of 19 languages |
+| Translate Email | LLM detects language and translates to/from English or 19 languages |
 | Search History | Vector embeddings enable semantic search |
 
 ---
@@ -65,6 +66,7 @@ An AI-powered email assistant with seven core features:
 write and receive emails daily as part of their core work activity.
 
 **Specific use cases:**
+
 - A manager reviewing a long project update email
 - An employee drafting a difficult message to a client
 - An assistant extracting tasks from a meeting follow-up email
@@ -77,7 +79,7 @@ write and receive emails daily as part of their core work activity.
 ## 5. Tools and Frameworks
 
 | Component | Technology | Reason for Choice |
-|-----------|-----------|------------------|
+| --------- | ---------- | ----------------- |
 | LLM | Llama 3.2:1b via Ollama | Free, local, fits 8 GB RAM |
 | UI | Streamlit | Python-native, fast to build |
 | Vector DB | ChromaDB embedded | No server needed, simple API |
@@ -93,6 +95,7 @@ The application runs entirely on a local machine with 8 GB RAM.
 ## 6. Expected Output and User Interaction
 
 **User workflow:**
+
 1. Open the Streamlit web UI at localhost:8501
 2. Select a feature from the sidebar
 3. Paste an email into the text box
@@ -101,13 +104,15 @@ The application runs entirely on a local machine with 8 GB RAM.
 6. All results automatically saved to searchable history
 
 **Sample input:**
-```
+
+```text
 hey sarah we need the q3 report done by friday also can u
 tell the team to send their parts by thursday morning thx
 ```
 
 **Expected rewrite output:**
-```
+
+```text
 Dear Sarah,
 
 Please ensure the Q3 report is completed by Friday.
@@ -121,7 +126,7 @@ Thank you.
 
 ## 7. Application Workflow
 
-```
+```text
 User Input (Streamlit UI)
         ↓
 Feature Selection
@@ -145,6 +150,7 @@ Search History → Semantic query → Top-K results by similarity
 ## 8. Project Scope
 
 **In scope for this capstone:**
+
 - Single user local application
 - Plain text email input
 - Six AI processing features
@@ -152,6 +158,7 @@ Search History → Semantic query → Top-K results by similarity
 - Streamlit web interface
 
 **Out of scope (future work):**
+
 - PDF email import
 - Multi-user support
 - Cloud deployment
@@ -162,7 +169,7 @@ Search History → Semantic query → Top-K results by similarity
 ## 9. Timeline
 
 | Week | Milestone |
-|------|-----------|
+| ---- | --------- |
 | 1 | Research tools, install Ollama, uv, VS Code |
 | 2 | Project structure, GitHub, pyproject.toml |
 | 3 | Write config.py, llm_engine.py, vector_store.py |

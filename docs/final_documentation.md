@@ -1,20 +1,23 @@
 # Final Documentation — AI Email Assistant
+
 ## CAP 942: Capstone Project — AI Application Development
 
 **Student Name:** Mittal Jain
 **Date:** [03/2026]
-**GitHub:** https://github.com/mittal-jn/EmailAssistant_AI
+**GitHub:** <https://github.com/mittal-jn/EmailAssistant_AI>
 
 ---
 
 ## 1. Application Overview
 
 ### Purpose
+
 The AI Email Assistant is a locally-run Streamlit web application
 that uses Llama 3.2:1b via Ollama to help office professionals
 and business workers manage and improve their email communication.
 
 ### Problem It Solves
+
 - Poor writing quality in quickly drafted emails
 - Time lost reading long complex messages
 - Tasks and deadlines missed because they are buried in email text
@@ -23,11 +26,13 @@ and business workers manage and improve their email communication.
 - No way to find past emails by their meaning
 
 ### Intended Users
+
 Office professionals and business workers who write and receive
 emails daily. The application is designed to be simple enough
 for any professional to use without technical knowledge.
 
 ### Key Design Decisions
+
 - **Local only** — no data ever leaves the user's machine
 - **No subscriptions** — entirely free and open source
 - **Low RAM** — runs on 8 GB machines using Llama 3.2:1b
@@ -37,7 +42,8 @@ for any professional to use without technical knowledge.
 ---
 
 ## 2. Technical Workflow Diagram
-```
+
+```text
 ┌─────────────────────────────────────────────────────────┐
 │                        USER                             │
 │              Pastes email text into UI                  │
@@ -48,8 +54,8 @@ for any professional to use without technical knowledge.
 ┌─────────────────────────────────────────────────────────┐
 │              STREAMLIT UI  (app.py)                     │
 │                                                         │
-│  ✍️ Rewrite  📋 Summarize  ✅ Extract  💡 Clarity     │
-│       ↩️ Reply  🌐 Translate  🗂️ Search History        |
+│  ✍️ Rewrite  📋 Summarize  ✅ Extract  💡 Clarity      │
+│       ↩️ Reply  🌐 Translate  🗂️ Search History         │
 └──────────────┬──────────────────────────┬───────────────┘
                │                          │
                ▼                          ▼
@@ -88,7 +94,7 @@ for any professional to use without technical knowledge.
 ## 3. Tools, Libraries and Frameworks
 
 | Tool | Version | Role |
-|------|---------|------|
+| ---- | ------- | ---- |
 | Python | 3.14.3 | Programming language |
 | uv | 0.10+ | Package manager and virtual environment |
 | Ollama | 0.4+ | Local LLM server runner |
@@ -105,7 +111,8 @@ for any professional to use without technical knowledge.
 ## 4. Application Architecture
 
 ### File Structure
-```
+
+```text
 EmailAssistant_AI/
 │
 ├── app.py                    ← Entry point, Streamlit UI
@@ -154,7 +161,8 @@ between pages. Uses `st.empty()` placeholders to render
 streaming output token by token.
 
 ### Data Flow — Rewrite Feature Example
-```
+
+```text
 1. User pastes email → captured as Python string
 2. Button clicked → llm_engine.rewrite_email(text) called
 3. Prompt built: "Rewrite this email professionally..."
@@ -172,24 +180,28 @@ streaming output token by token.
 ## 5. Features and Functionality
 
 ### Rewrite Email
+
 Transforms casual or poorly written drafts into professional
 communication. The prompt instructs the model to fix grammar
 and tone while preserving the original meaning. Output
 appears via streaming so users see results immediately.
 
 ### Summarize Email
+
 Compresses long messages into 3-5 bullet points each starting
 with the • character. The model is instructed to be concise
 with a maximum of one sentence per bullet point. Useful for
 long thread summaries and management updates.
 
 ### Extract Action Items
+
 Produces four structured sections from any email — ACTION
 ITEMS, DEADLINES, PEOPLE, and DECISIONS OR REQUESTS. The
 model uses ALL CAPS section headers in the prompt which
 improves structured output consistency in small 1B models.
 
 ### Improve Clarity
+
 Provides two outputs in one response — a FEEDBACK section
 with 2-3 sentences of coaching on tone, clarity, and
 structure, followed by an IMPROVED VERSION of the email.
@@ -204,6 +216,7 @@ actionable, and output only the reply with no commentary.
 Result saved to ChromaDB with action="reply".
 
 ### Translate Email
+
 Two modes on one page. **Translate to English** auto-detects
 the source language using the model and outputs a structured
 response with DETECTED LANGUAGE label followed by the full
@@ -214,6 +227,7 @@ into that language while preserving professional tone. Both
 modes are saved to ChromaDB with action="translate".
 
 ### Search History
+
 Every processed email is automatically saved to ChromaDB
 with a 384-dimension vector embedding. Users can search
 past emails using natural language queries. Results are
@@ -225,7 +239,7 @@ match score. Finds emails by meaning not exact keywords.
 ## 6. RAM Optimisation for 8 GB Machines
 
 | Decision | RAM Saved | Reason |
-|----------|-----------|--------|
+| -------- | --------- | ------ |
 | Llama 3.2:1b not llama3 | ~3.7 GB | 8B model needs 5 GB alone |
 | num_ctx=2048 not 4096 | ~400 MB | Halves the KV cache size |
 | num_predict=512 cap | Prevents runaway generation | Keeps responses fast |
@@ -239,6 +253,7 @@ Total RAM usage: approximately 4.3 GB leaving 3.7 GB headroom.
 ## 7. Challenges and Lessons Learned
 
 ### Challenge 1 — Understanding Vector Search
+
 The hardest concept in this project was understanding how
 semantic search works. The key insight was that text is
 converted into a list of 384 numbers (a vector) where
@@ -248,6 +263,7 @@ the angle between vectors in 384-dimensional space. Once
 this clicked, the implementation became straightforward.
 
 ### Challenge 2 — RAM Constraints
+
 The obvious model choice llama3 (8B) caused heavy disk
 swapping on an 8 GB machine making inference take several
 minutes. Switching to llama3.2:1b (1B parameters, 1.3 GB)
@@ -255,6 +271,7 @@ brought inference down to 15-30 seconds per request on CPU
 — a usable speed for interactive work.
 
 ### Challenge 3 — Streaming vs Blocking Output
+
 Without streaming the UI appeared frozen for 30-60 seconds
 after clicking a button. Implementing ollama.chat with
 stream=True and using st.empty() placeholders gave the
@@ -262,18 +279,21 @@ response a live typing effect that makes the wait feel much
 shorter even though total processing time is the same.
 
 ### Challenge 4 — Windows Encoding Issues
+
 Python on Windows defaults to cp1252 encoding which could
 not handle some Unicode characters in the CSS. Fixed by
 setting PYTHONUTF8=1 as an environment variable and always
 opening files with encoding='utf-8' explicitly.
 
-### Challenge 5 — Git Tracking __pycache__
+### Challenge 5 — Git Tracking `__pycache__`
+
 Python's bytecode cache folder was accidentally staged in
 Git before .gitignore was created. Required git rm --cached
 to stop tracking it. Lesson — create .gitignore before
 writing any code.
 
 ### Key Lessons
+
 - Start with the smallest model that works, scale up later
 - Streaming is essential for AI application UX
 - uv is dramatically faster than pip for dependency management
@@ -290,6 +310,7 @@ a clean database state before and after each test providing
 full test isolation.
 
 **Test coverage:**
+
 - Empty collection verification
 - Single and multiple record saves
 - UUID return value validation
@@ -298,9 +319,10 @@ full test isolation.
 - Distance score range validation
 - Record retrieval and count accuracy
 - Delete operations including edge cases
-- All four action types verified
+- All six action types verified
 
 **Run tests:**
+
 ```bash
 uv run pytest tests/ -v -W ignore::DeprecationWarning
 ```
@@ -318,6 +340,7 @@ copying and pasting text manually. Many email clients support
 PDF export making this immediately practical for real users.
 
 Other potential enhancements:
+
 - Gmail API integration for direct inbox access
 - Batch processing of multiple emails at once
 - Model selector in the UI to switch between Llama versions

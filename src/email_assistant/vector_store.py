@@ -47,7 +47,6 @@ from sentence_transformers import SentenceTransformer
 # SEARCH_TOP_K  : how many results to return (default 4)
 from .config import CHROMA_DIR, COLLECTION_NAME, EMBED_MODEL, SEARCH_TOP_K
 
-
 # ── Singleton Functions (load once, reuse forever) ─────────────
 
 # @lru_cache(maxsize=1) means:
@@ -222,22 +221,24 @@ def search_emails(query: str, top_k: int = SEARCH_TOP_K) -> list[dict]:
         include=["documents", "metadatas", "distances"],
     )
 
-    if not results["documents"][0]:
+    # Extract each field — ChromaDB types these as list | None,
+    # so we use `or []` to narrow the type and guard against None.
+    docs  = results["documents"]  or [[]]
+    metas = results["metadatas"]  or [[]]
+    dists = results["distances"]  or [[]]
+
+    if not docs[0]:
         return []
 
     # results is a nested dictionary. Each value is a list of lists
     # because ChromaDB supports batch queries.
-    # results["documents"][0] = documents for query 0 (our only query)
-    # results["documents"][0][0] = first document of query 0
+    # docs[0] = documents for query 0 (our only query)
+    # docs[0][0] = first document of query 0
     #
     # We zip() the three lists together to process them in parallel.
     # zip([a1,a2], [b1,b2], [c1,c2]) → [(a1,b1,c1), (a2,b2,c2)]
     out = []
-    for doc, meta, dist in zip(
-        results["documents"][0],
-        results["metadatas"][0],
-        results["distances"][0],
-    ):
+    for doc, meta, dist in zip(docs[0], metas[0], dists[0], strict=False):
         out.append({
             "document": doc,
             "metadata": meta,
@@ -267,16 +268,21 @@ def get_all_emails(limit: int = 50) -> list[dict]:
         include=["documents", "metadatas"]
     )
 
-    if not results["documents"]:
+    # Extract each field — ChromaDB types these as list | None,
+    # so we use `or []` to narrow the type and guard against None.
+    docs  = results["documents"] or []
+    metas = results["metadatas"] or []
+
+    if not docs:
         return []
 
     # Zip documents and metadata together into pairs
     # then sort by timestamp string newest first.
     # Timestamp format "YYYY-MM-DD HH:MM" sorts correctly
     # as a plain string because of the date format we chose.
-    pairs = list(zip(results["documents"], results["metadatas"]))
+    pairs = list(zip(docs, metas, strict=False))
     pairs.sort(
-        key=lambda x: x[1].get("timestamp", ""),
+        key=lambda x: str(x[1].get("timestamp", "")),
         reverse=True  # newest first
     )
 
