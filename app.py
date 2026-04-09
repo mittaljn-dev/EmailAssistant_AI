@@ -67,11 +67,11 @@ st.markdown("""
     --bg:      #000000;
     --surface: #2C3E50;
     --border:  #1a2a3a;
-    --accent:  #39FF14;
-    --accent2: #00d4ff;
+    --accent:  #00D4FF;
+    --accent2: #0099bb;
     --text:    #f0f1f3;
     --muted:   #7a9090;
-    --success: #39FF14;
+    --success: #00D4FF;
     --danger:  #ff4444;
   }
 
@@ -176,7 +176,7 @@ st.markdown("""
   }
   .stTextArea textarea:focus {
     border-color: var(--accent) !important;
-    box-shadow: 0 0 8px rgba(57,255,20,0.25) !important;
+    box-shadow: 0 0 8px rgba(0,212,255,0.25) !important;
   }
   .stButton > button {
     background: var(--accent) !important;
@@ -190,7 +190,7 @@ st.markdown("""
   }
   .stButton > button:hover {
     opacity: 0.85 !important;
-    box-shadow: 0 0 12px #39FF14 !important;
+    box-shadow: 0 0 14px #00D4FF !important;
   }
   .stTextInput input {
     background: var(--surface) !important;
