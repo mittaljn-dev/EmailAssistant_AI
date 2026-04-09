@@ -337,7 +337,7 @@ st.markdown("""
   
 </div>
 <div class="main-sub">
-  'Rewrite · Summarize · Extract · Improve · Search · Translate — all on your machine.'
+  Rewrite · Summarize · Extract · Improve · Search · Translate — all on your machine.
 </div>
 """, unsafe_allow_html=True)
 
