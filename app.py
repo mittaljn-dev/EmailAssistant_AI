@@ -64,15 +64,15 @@ st.markdown("""
   @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap');
 
    :root {
-    --bg:      #1e2433;
-    --surface: #262d40;
-    --border:  #343d52;
-    --accent:  #ff6b6b;
-    --accent2: #4ecdc4;
-    --text:    #eef0f4;
-    --muted:   #7d8ba8;
-    --success: #2dd4a0;
-    --danger:  #ff4757;
+    --bg:      #000000;
+    --surface: #2C3E50;
+    --border:  #1a2a3a;
+    --accent:  #39FF14;
+    --accent2: #00d4ff;
+    --text:    #f0f1f3;
+    --muted:   #7a9090;
+    --success: #39FF14;
+    --danger:  #ff4444;
   }
 
   html, body, [data-testid="stAppViewContainer"] {
@@ -96,7 +96,7 @@ st.markdown("""
     font-family: 'DM Mono', monospace;
     font-size: 0.7rem;
     background: var(--accent);
-    color: #0e0f11;
+    color:  #000000;
     padding: 3px 10px;
     border-radius: 4px;
     font-weight: 500;
@@ -176,11 +176,11 @@ st.markdown("""
   }
   .stTextArea textarea:focus {
     border-color: var(--accent) !important;
-    box-shadow: 0 0 0 3px rgba(232,197,71,0.12) !important;
+    box-shadow: 0 0 8px rgba(57,255,20,0.25) !important;
   }
   .stButton > button {
     background: var(--accent) !important;
-    color: #0e0f11 !important;
+    color: #000000 !important;
     font-family: 'DM Sans', sans-serif !important;
     font-weight: 500 !important;
     border: none !important;
@@ -188,7 +188,10 @@ st.markdown("""
     padding: 10px 26px !important;
     font-size: 0.88rem !important;
   }
-  .stButton > button:hover { opacity: 0.85 !important; }
+  .stButton > button:hover {
+    opacity: 0.85 !important;
+    box-shadow: 0 0 12px #39FF14 !important;
+  }
   .stTextInput input {
     background: var(--surface) !important;
     border: 1px solid var(--border) !important;
