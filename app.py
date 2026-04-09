@@ -273,7 +273,7 @@ with st.sidebar:
       <div style="font-family:'DM Serif Display',serif;font-size:1.2rem;
                   color:#e2e4e9">✉ Email Assistant</div>
       <div style="font-family:'DM Mono',monospace;font-size:0.7rem;
-                  color:#6b7280;margin-top:4px">CAP 942 · Capstone</div>
+                  color:#6b7280;margin-top:4px">Local · Private · Free</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -331,10 +331,10 @@ with st.sidebar:
 st.markdown("""
 <div style="margin-bottom:4px">
   <span class="main-title">AI Email Assistant</span>
-  <span class="main-badge">Local · Private · Free</span>
+  
 </div>
 <div class="main-sub">
-  Rewrite · Summarize · Extract · Improve · Search — all on your machine.
+  'Rewrite · Summarize · Extract · Improve · Search · Translate — all on your machine.'
 </div>
 """, unsafe_allow_html=True)
 
