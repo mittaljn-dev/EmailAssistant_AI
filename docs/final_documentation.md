@@ -348,6 +348,24 @@ Other potential enhancements:
 
 ---
 
+## Security & Reliability
+
+### Data Security
+- All processing happens locally on the user's machine
+- No email data is transmitted over the internet
+- No API keys required — no credentials to steal or leak
+- ChromaDB stores history locally at data/chroma_db/
+- ChromaDB telemetry explicitly disabled
+- Fully open source — auditable by anyone
+
+### Hallucination Mitigation
+- Temperature set to 0.3 for focused deterministic output
+- All features are input-grounded — model works with
+  user-provided text, not generating new facts
+- Directive prompts constrain output format strictly
+- Extract feature instructs "write None if empty"
+  to prevent invented action items
+
 *This application satisfies all CAP 942 requirements: uses one
 open-source LLM (Llama 3.2:1b), accepts user input, produces
 LLM-generated output, runs as a Streamlit web app, uses a vector
